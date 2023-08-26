@@ -17,7 +17,7 @@ func New(sh string) Shell {
 	return Shell{sh}
 }
 
-// Run runs a file or a command and returns its output.
+// Run runs a command and returns its output.
 // The command will be running in background and its output is discarded
 // if it ends with &.
 func (s Shell) Run(cmd string) (string, error) {
@@ -32,9 +32,9 @@ func (s Shell) Run(cmd string) (string, error) {
 	}
 
 	if bg {
-		return "", exec.Command("sh", "-c", cmd).Start()
+		return "", exec.Command(s.sh, "-c", cmd).Start()
 	}
-	output, err := exec.Command("sh", "-c", cmd).CombinedOutput()
+	output, err := exec.Command(s.sh, "-c", cmd).CombinedOutput()
 	return string(output), err
 }
 
